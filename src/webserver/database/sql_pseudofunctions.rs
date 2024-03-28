@@ -455,11 +455,19 @@ pub(super) fn extract_req_param_non_nested<'a>(
         StmtParam::AllVariables(get_or_post) => extract_get_or_post(*get_or_post, request),
         StmtParam::Path => Some(Cow::Borrowed(&request.path)),
         StmtParam::Protocol => Some(Cow::Borrowed(&request.protocol)),
-        StmtParam::UploadedFilePath(x) => request
-            .uploaded_files
-            .get(x)
-            .and_then(|x| x.file.path().to_str())
-            .map(Cow::Borrowed),
+        StmtParam::UploadedFilePath(x) => {
+			request
+				.uploaded_files
+				.get(x)
+				.and_then(|x| {
+					if x.file.exists() {
+						x.file.path().to_str()
+					} else {
+						None
+					}
+				})
+				.map(Cow::Borrowed),
+		}
         StmtParam::PersistUploadedFile { .. } => {
             bail!("Nested persist_uploaded_file() function not allowed")
         }
