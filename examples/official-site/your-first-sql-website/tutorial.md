@@ -68,6 +68,8 @@ can be defined using SQL scripts located in the
 Each script represents a [migration](https://en.wikipedia.org/wiki/Schema_migration)
 that sets up or modifies the database structure.
 
+We'll keep things simple here, but for a deeper dive, consider reading the [SQLPage introduction to migrations](https://sql.ophir.dev/migrations.sql).
+
 The scripts are executed in order. You must prefix them with a number to control the order in which they are executed.
 For instance, `my_website/sqlpage/migrations/0001_create_users_table.sql`
 will be executed before `my_website/sqlpage/migrations/0002_add_email_to_users_table.sql`.
